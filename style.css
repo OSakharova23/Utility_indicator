@@ -91,9 +91,6 @@
   display: inline-block;
 }
 
-[id^="btn_digit_"] {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-}
 a {
   display: inline-block;
   text-decoration: none;
@@ -109,4 +106,35 @@ a {
 a:hover {
   background: white;
   color: #ff8f00;
+}
+
+/* Переключение темы - меняется ТОЛЬКО фон калькулятора */
+.theme-toggle {
+  opacity: 0;        /* делает прозрачным */
+  pointer-events: none;
+  display: none;
+}
+
+.theme-toggle:checked + .calculator {
+  background-color: #23364c;  /* меняем только эту строчку */
+}
+
+[id^="btn_digit_"] {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+#btn_theme {
+    width: 115px;          /* сделаем кнопку шире других */
+    border-radius: 34px;   /* подкорректируем округлость */
+    background: #1976d2;
+    color: white;
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+#btn_theme:hover {
+  background: white;
+  color: #1976d2;
 }
