@@ -84,9 +84,7 @@
   background-color: #edf4fc;
   padding: 20px 20px 50px 20px;
   border-radius: 20px;
-  display: inline-block;
 }
-
 
 [id^="btn_digit_"] {
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -111,7 +109,7 @@
 #btn_op_calc_color {
     width: 130px;
 }
-#btn_op_reverse {
+#btn_random {
     width: 170px;
 }
 

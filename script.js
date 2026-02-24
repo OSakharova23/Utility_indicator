@@ -225,23 +225,15 @@ window.onload = function(){
         }
     }
 
-    document.getElementById("btn_op_reverse").onclick = function() {
-        if (selectedOperation) {
-            if (b === '') return;
-            
-            let isNegative = b < 0;
-            b = (isNegative ? '-' : '') + 
-                Math.abs(b).toString().split('').reverse().join('').replace(/^0+/, '') || '0';
-            
-            outputElement.innerHTML = b;
-        } else {
-            if (a === '') return;
-            
-            let isNegative = a < 0;
-            a = (isNegative ? '-' : '') + 
-                Math.abs(a).toString().split('').reverse().join('').replace(/^0+/, '') || '0';
-            
-            outputElement.innerHTML = a;
+    document.getElementById("btn_random").onclick = function() {
+        let max = Number(outputElement.innerHTML) || 100;
+        let random = Math.floor(Math.random() * (max + 1));
+        outputElement.innerHTML = random;
+        if (!selectedOperation) {
+            a = random.toString();
+        }
+        else {
+            b = random.toString();
         }
     }
 };
