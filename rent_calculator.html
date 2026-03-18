@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Калькулятор</title>
+  <link rel="stylesheet" href="rent_style.css">
+  <script type="text/javascript" src="rent_script.js"></script>
+</head>
+
+<body>
+  <div class="rent_calculator"> <!-- div - это базовый html-контейнер, который может содержать в себе другие html-элементы. -->
+    <!-- блок с экраном калькулятора, где будет выводиться результат вычислений. -->
+    <div id="rent_result" class="rent_result">
+      0
+    </div>
+
+    <!-- блок с кнопками калькулятора. -->
+    <div>
+      <!--горизонтальный ряд из четырех кнопок-->
+      <div>  
+        <button id="rent_btn_op_clear" class="rent_my-btn rent_secondary">C</button>    <!-- про тэг кнопки: https://www.w3schools.com/tags/tag_button.asp -->
+        <button id="rent_btn_op_sign" class="rent_my-btn rent_secondary">+/-</button>
+        <button id="rent_btn_op_percent" class="rent_my-btn rent_secondary">%</button>
+        <button id="rent_btn_op_div" class="rent_my-btn rent_primary">/</button>
+        <button id="rent_btn_op_back" class="rent_my-btn rent_sizer">Backspace</button>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_7" class="rent_my-btn">7</button>
+        <button id="rent_btn_digit_8" class="rent_my-btn">8</button>
+        <button id="rent_btn_digit_9" class="rent_my-btn">9</button>
+        <button id="rent_btn_op_mult" class="rent_my-btn rent_primary">x</button>
+        <button id="rent_btn_op_sqrt" class="rent_my-btn rent_sizer">√</button>
+        <button id="rent_btn_op_x**2" class="rent_my-btn rent_sizer">x²</button>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_4" class="rent_my-btn">4</button>
+        <button id="rent_btn_digit_5" class="rent_my-btn">5</button>
+        <button id="rent_btn_digit_6" class="rent_my-btn">6</button>
+        <button id="rent_btn_op_minus" class="rent_my-btn rent_primary">-</button>
+        <button id="rent_btn_op_factorial" class="rent_my-btn rent_sizer">x!</button>
+        <button id="rent_btn_op_000" class="rent_my-btn rent_sizer">000</button>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_1" class="rent_my-btn">1</button>
+        <button id="rent_btn_digit_2" class="rent_my-btn">2</button>
+        <button id="rent_btn_digit_3" class="rent_my-btn">3</button>
+        <button id="rent_btn_op_plus" class="rent_my-btn rent_primary">+</button>
+        <button id="rent_btn_op_res_color" class="rent_my-btn rent_sizer">Цвет</button>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_0" class="rent_my-btn">0</button>
+        <button id="rent_btn_digit_dot" class="rent_my-btn">.</button>
+        <button id="rent_btn_op_equal" class="rent_my-btn rent_primary rent_execute">=</button>
+        <button id="rent_btn_op_calc_color" class="rent_my-btn rent_sizer">Тема</button>
+      </div> 
+      <div>
+        <button id="rent_btn_rent" class="rent_my-btn rent_sizer">Цена за ХВС</button>
+      </div> 
+    </div>
+  </div>
+</body>
+</html>

@@ -1,6 +1,5 @@
-
 /* опишем базовый стиль кнопки калькулятора */
-.my-btn { 
+.rent_my-btn { 
   margin-right: 5px;           /* задаем отступ от кнопки справа */
   margin-top: 5px;             /* задаем отступ от кнопки сверху*/
   width: 50px;                 /* задаем ширину кнопки */
@@ -18,52 +17,52 @@
 } 
 
 /* hover - это состояние элемента, когда на него наведен курсор */
-.my-btn:hover {
+.rent_my-btn:hover {
   background: white;
   color: #91bbe6;
 }
 
 /* active - это состояние активации элемента. В случае кнопки - нажатие на нее */
-.my-btn:active {
+.rent_my-btn:active {
   filter: brightness(130%); /* увеличим интенсивность цвета для эффекта вспышки */
 }
 
 /* селектор для кнопок первостепенных операций */
-.my-btn.primary { 
+.rent_my-btn.rent_primary { 
   background: #ffc070;
 }
 
-
-.my-btn.primary:hover {
+.rent_my-btn.rent_primary:hover {
   background: white;
   color: #ffc070;
 }
 
 /* селектор для кнопок второстепенных операций */
-.my-btn.secondary { 
-  background: #1976d2;
-}
-
-.my-btn.secondary:hover {
-  background: white;
-  color: #1976d2;
-}
-
-/* селектор для кнопки расчета выражения (=) */
-.my-btn.execute { 
-  width: 110px;          /* сделаем кнопку шире других */
-  border-radius: 34px;   /* подкорректируем округлость */
-  background: #ff8f00;
+.rent_my-btn.rent_secondary { 
+  background: #ffc070;
   color: white;
 }
 
-.my-btn.execute:hover {
+.rent_my-btn.rent_secondary:hover {
   background: white;
-  color: #ff8f00;
+  color: #ffc070;
+}
+
+/* селектор для кнопки расчета выражения (=) */
+.rent_my-btn.rent_execute { 
+  width: 110px;          /* сделаем кнопку шире других */
+  border-radius: 34px;   /* подкорректируем округлость */
+  background: #ffc070;
+  color: white;
+}
+
+.rent_my-btn.rent_execute:hover {
+  background: white;
+  color: #ffc070;
 }
 
 /* селектор для поля вывода результата */
-.result { 
+.rent_result { 
   width: 350px;
   height: 50px;
   margin-bottom: 15px;         /* отступ снизу */
@@ -76,7 +75,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.calculator {
+.rent_calculator {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -86,13 +85,13 @@
   border-radius: 20px;
 }
 
-[id^="btn_digit_"] {
+[id^="rent_btn_digit_"] {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-.my-btn.sizer { 
+.rent_my-btn.rent_sizer { 
   border-radius: 34px;
-  background: #1976d2;
+  background: #ff8f00;
   color: white;
   display: inline-block;
   text-align: center;
@@ -100,20 +99,20 @@
   cursor: pointer;
 }
 
-#btn_op_back {
+#rent_btn_op_back {
     width: 130px;
 }
-#btn_op_res_color {
+#rent_btn_op_res_color {
     width: 130px;
 }
-#btn_op_calc_color {
+#rent_btn_op_calc_color {
     width: 130px;
 }
-#btn_random {
-    width: 170px;
+#rent_btn_rent {
+    width: 300px;
 }
 
-.my-btn.sizer:hover {
+.rent_my-btn.rent_sizer:hover {
   background: white;
-  color: #1976d2;
+  color: #ff8f00;
 }
