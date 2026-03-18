@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Калькулятор</title>
+  <link rel="stylesheet" href="rent_style.css">
+</head>
+
+<body>
+    <p>Цель данной лабораторной работы - <mark>знакомство</mark> с инструментами построения пользовательских
+    интерфейсов web-сайтов: <mark>HTML</mark>, <mark>CSS</mark>. В ходе выполнения работы, вам предстоит
+    ознакомиться с кодом реализации простого калькулятора, и затем выполнить задания по варианту</p>
+  <input type="checkbox" id="rent_theme-toggle" class="rent_theme-toggle">
+  <div class="rent_calculator"> <!-- div - это базовый html-контейнер, который может содержать в себе другие html-элементы. -->
+    <!-- блок с экраном калькулятора, где будет выводиться результат вычислений. -->
+    <div id="rent_result" class="rent_result">
+      0
+    </div>
+
+    <!-- блок с кнопками калькулятора. -->
+    <div>
+      <!--горизонтальный ряд из четырех кнопок-->
+      <div>  
+        <button id="rent_btn_op_clear" class="rent_my-btn rent_secondary">C</button>    <!-- про тэг кнопки: https://www.w3schools.com/tags/tag_button.asp -->
+        <button id="rent_btn_op_sign" class="rent_my-btn rent_secondary">+/-</button>
+        <button id="rent_btn_op_percent" class="rent_my-btn rent_secondary">%</button>
+        <button id="rent_btn_op_div" class="rent_my-btn rent_primary">/</button>
+        <label for="rent_theme-toggle" id="rent_btn_theme" class="rent_my-btn rent_primary rent_execute">Тема</label>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_7" class="rent_my-btn">7</button>
+        <button id="rent_btn_digit_8" class="rent_my-btn">8</button>
+        <button id="rent_btn_digit_9" class="rent_my-btn">9</button>
+        <button id="rent_btn_op_mult" class="rent_my-btn rent_primary">x</button>
+        <a href="https://github.com/OSakharova23" target="_blank">GitHub</a>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_4" class="rent_my-btn">4</button>
+        <button id="rent_btn_digit_5" class="rent_my-btn">5</button>
+        <button id="rent_btn_digit_6" class="rent_my-btn">6</button>
+        <button id="rent_btn_op_minus" class="rent_my-btn rent_primary">-</button>
+        <select name="Недвижимость">
+            <option value="home">Дом</option>
+            <option value="flat">Квартира</option>
+            <option value="studio">Студия</option>
+        </select>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_1" class="rent_my-btn">1</button>
+        <button id="rent_btn_digit_2" class="rent_my-btn">2</button>
+        <button id="rent_btn_digit_3" class="rent_my-btn">3</button>
+        <button id="rent_btn_op_plus" class="rent_my-btn rent_primary">+</button>
+      </div>
+
+      <div>
+        <button id="rent_btn_digit_0" class="rent_my-btn">0</button>
+        <button id="rent_btn_digit_dot" class="rent_my-btn">.</button>
+        <button id="rent_btn_op_equal" class="rent_my-btn rent_primary rent_execute">=</button>
+      </div>
+      <div>
+        <p>ЛР выполнена Сахаровой Ольгой</p>
+      </div>
+      <div>
+        <details>
+            <summary>Автор</summary>
+            <ul>
+                <li>Сахарова Ольга Павловна</li>
+                <li>Группа: РТ5-41Б</li>
+            </ul>
+        </details>
+      </div>
+    </div>
+</body>
+</html>

@@ -1,6 +1,5 @@
-
 /* опишем базовый стиль кнопки калькулятора */
-.my-btn { 
+.rent_my-btn { 
   margin-right: 5px;           /* задаем отступ от кнопки справа */
   margin-top: 5px;             /* задаем отступ от кнопки сверху*/
   width: 50px;                 /* задаем ширину кнопки */
@@ -18,52 +17,51 @@
 } 
 
 /* hover - это состояние элемента, когда на него наведен курсор */
-.my-btn:hover {
+.rent_my-btn:hover {
   background: white;
   color: #91bbe6;
 }
 
 /* active - это состояние активации элемента. В случае кнопки - нажатие на нее */
-.my-btn:active {
+.rent_my-btn:active {
   filter: brightness(130%); /* увеличим интенсивность цвета для эффекта вспышки */
 }
 
 /* селектор для кнопок первостепенных операций */
-.my-btn.primary { 
+.rent_my-btn.rent_primary { 
   background: #ffc070;
 }
 
-
-.my-btn.primary:hover {
+.rent_my-btn.rent_primary:hover {
   background: white;
   color: #ffc070;
 }
 
 /* селектор для кнопок второстепенных операций */
-.my-btn.secondary { 
-  background: #1976d2;
+.rent_my-btn.rent_secondary { 
+  background: #ff8f00;
 }
 
-.my-btn.secondary:hover {
+.rent_my-btn.rent_secondary:hover {
   background: white;
-  color: #1976d2;
+  color: #ff8f00;
 }
 
 /* селектор для кнопки расчета выражения (=) */
-.my-btn.execute { 
+.rent_my-btn.rent_execute { 
   width: 110px;          /* сделаем кнопку шире других */
   border-radius: 34px;   /* подкорректируем округлость */
   background: #ff8f00;
   color: white;
 }
 
-.my-btn.execute:hover {
+.rent_my-btn.rent_execute:hover {
   background: white;
   color: #ff8f00;
 }
 
 /* селектор для поля вывода результата */
-.result { 
+.rent_result { 
   width: 350px;
   height: 50px;
   margin-bottom: 15px;         /* отступ снизу */
@@ -76,7 +74,7 @@
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.calculator {
+.rent_calculator {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -108,24 +106,24 @@ a:hover {
 }
 
 /* Переключение темы - меняется ТОЛЬКО фон калькулятора */
-.theme-toggle {
+.rent_theme-toggle {
   opacity: 0;        /* делает прозрачным */
   pointer-events: none;
   display: none;
 }
 
-.theme-toggle:checked + .calculator {
+.rent_theme-toggle:checked + .rent_calculator {
   background-color: #23364c;  /* меняем только эту строчку */
 }
 
-[id^="btn_digit_"] {
+[id^="rent_btn_digit_"] {
     font-family: Georgia, 'Times New Roman', Times, serif;
 }
 
-#btn_theme {
+#rent_btn_theme {
     width: 115px;          /* сделаем кнопку шире других */
     border-radius: 34px;   /* подкорректируем округлость */
-    background: #1976d2;
+    background: #ff8f00;
     color: white;
     display: inline-block;
     text-align: center;
@@ -133,7 +131,7 @@ a:hover {
     cursor: pointer;
 }
 
-#btn_theme:hover {
+#rent_btn_theme:hover {
   background: white;
-  color: #1976d2;
+  color: #ff8f00;
 }
