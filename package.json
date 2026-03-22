@@ -1,0 +1,28 @@
+{
+  "name": "course_xml",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js", 
+  "scripts": {
+    "start": "node src/rent_index.js",
+    "dev": "nodemon src/rent_index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OSakharova23/Sakharova_XML.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/OSakharova23/Sakharova_XML/issues"
+  },
+  "homepage": "https://github.com/OSakharova23/Sakharova_XML#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
