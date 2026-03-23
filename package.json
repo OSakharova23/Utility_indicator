@@ -2,7 +2,7 @@
   "name": "course_xml",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js", 
+  "main": "index.js",
   "scripts": {
     "start": "node src/rent_index.js",
     "dev": "nodemon src/rent_index.js"
