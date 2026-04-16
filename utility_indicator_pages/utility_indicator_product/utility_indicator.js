@@ -1,14 +1,15 @@
-import {rent_ProductComponent} from "../../rent_components/rent_product/rent.js";
-import {rent_MainPage} from "../rent_main/rent.js";
-import {rent_HomeButtonComponent} from "../../rent_components/rent_home-button/rent.js";
+import {utility_indicator_ProductComponent} from "../../utility_indicator_components/utility_indicator_product/utility_indicator.js";
+import {utility_indicator_MainPage} from "../utility_indicator_main/utility_indicator.js";
+import {utility_indicator_HomeButtonComponent} from "../../utility_indicator_components/utility_indicator_home-button/utility_indicator.js";
 
-export class rent_ProductPage {
-    constructor(rent_parent, rent_id) {
-        this.rent_parent = rent_parent
-        this.rent_id = rent_id
+
+export class utility_indicator_ProductPage {
+    constructor(utility_indicator_parent, utility_indicator_id) {
+        this.utility_indicator_parent = utility_indicator_parent;
+        this.utility_indicator_id = utility_indicator_id;
     }
 
-    rent_getServiceData() {
+    utility_indicator_getServiceData() {
         const services = {
             1: {
                 title: "Холодное водоснабжение",
@@ -42,22 +43,22 @@ export class rent_ProductPage {
             }
         };
         
-        return services[this.rent_id] || services[1];
+        return services[this.utility_indicator_id] || services[1];
     }
 
-    get rent_pageRoot() {
-        return document.getElementById('rent_product-page')
+    get utility_indicator_pageRoot() {
+        return document.getElementById('utility_indicator_product-page');
     }
 
-    rent_getHTML() {
+    utility_indicator_getHTML() {
         return (
             `
-                <div id="rent_product-page">
-                    <div id="rent_header-container" class="header" style="background-color: #ff8f00; color: white; padding: 1rem 0; margin-bottom: 2rem;">
+                <div id="utility_indicator_product-page">
+                    <div id="utility_indicator_header-container" class="header" style="background-color: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 0; margin-bottom: 2rem;">
                         <div class="container">
                             <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <h1 style="margin: 0; font-size: 1.8rem;">Квартплата</h1>
-                                <div id="rent_home-button-container"></div>
+                                <div id="utility_indicator_home-button-container"></div>
+                                <div style="width: 100px;"></div>
                             </div>
                         </div>
                     </div>
@@ -67,22 +68,22 @@ export class rent_ProductPage {
         )
     }
 
-    rent_goHome() {
-        const mainPage = new rent_MainPage(this.rent_parent)
-        mainPage.rent_render()
+    utility_indicator_goHome() {
+        const mainPage = new utility_indicator_MainPage(this.utility_indicator_parent);
+        mainPage.utility_indicator_render();
     }
 
-    rent_render() {
-        this.rent_parent.innerHTML = ''
-        const html = this.rent_getHTML()
-        this.rent_parent.insertAdjacentHTML('beforeend', html)
+    utility_indicator_render() {
+        this.utility_indicator_parent.innerHTML = '';
+        const html = this.utility_indicator_getHTML();
+        this.utility_indicator_parent.insertAdjacentHTML('beforeend', html);
         
-        const rent_homeButtonContainer = document.getElementById('rent_home-button-container')
-        const rent_homeButton = new rent_HomeButtonComponent(rent_homeButtonContainer)
-        rent_homeButton.rent_render(this.rent_goHome.bind(this))
+        const utility_indicator_homeButtonContainer = document.getElementById('utility_indicator_home-button-container');
+        const utility_indicator_homeButton = new utility_indicator_HomeButtonComponent(utility_indicator_homeButtonContainer);
+        utility_indicator_homeButton.utility_indicator_render(this.utility_indicator_goHome.bind(this));
 
-        const data = this.rent_getServiceData()
-        const product = new rent_ProductComponent(this.rent_pageRoot)
-        product.rent_render(data)
+        const data = this.utility_indicator_getServiceData();
+        const product = new utility_indicator_ProductComponent(this.utility_indicator_pageRoot);
+        product.utility_indicator_render(data);
     }
 }
