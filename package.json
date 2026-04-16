@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/rent_index.js",
-    "dev": "nodemon src/rent_index.js"
+    "start": "node src/utility_indicator.js",
+    "dev": "nodemon src/utility_indicator.js"
   },
   "repository": {
     "type": "git",

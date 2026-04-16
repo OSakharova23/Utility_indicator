@@ -1,14 +1,14 @@
-const rent_utilitiesService = require('../rent_services/rent_utilitiesService');
+const utility_indicatorService = require('../utility_indicator_services/utility_indicatorService');
 
-const rent_getAllUtilities = (req, res) => {
+const utility_getAllUtilities = (req, res) => {
     const { title } = req.query;
-    const utilities = rent_utilitiesService.rent_findAll(title);
+    const utilities = utility_indicatorService.utility_findAll(title);
     res.json(utilities);
 };
 
-const rent_getUtilityById = (req, res) => {
+const utility_getUtilityById = (req, res) => {
     const id = parseInt(req.params.id);
-    const utility = rent_utilitiesService.rent_findOne(id);
+    const utility = utility_indicatorService.utility_findOne(id);
     
     if (!utility) {
         return res.status(404).json({ error: 'Тариф не найден' });
@@ -17,7 +17,7 @@ const rent_getUtilityById = (req, res) => {
     res.json(utility);
 };
 
-const rent_createUtility = (req, res) => {
+const utility_createUtility = (req, res) => {
     const { title, src, tariff, description } = req.body;
     
     // Валидация
@@ -28,7 +28,7 @@ const rent_createUtility = (req, res) => {
         });
     }
     
-    const newUtility = rent_utilitiesService.rent_create({ 
+    const newUtility = utility_indicatorService.utility_create({ 
         title, 
         src, 
         tariff, 
@@ -37,9 +37,9 @@ const rent_createUtility = (req, res) => {
     res.status(201).json(newUtility);
 };
 
-const rent_updateUtility = (req, res) => {
+const utility_updateUtility = (req, res) => {
     const id = parseInt(req.params.id);
-    const updatedUtility = rent_utilitiesService.rent_update(id, req.body);
+    const updatedUtility = utility_indicatorService.utility_update(id, req.body);
     
     if (!updatedUtility) {
         return res.status(404).json({ error: 'Тариф не найден' });
@@ -48,9 +48,9 @@ const rent_updateUtility = (req, res) => {
     res.json(updatedUtility);
 };
 
-const rent_deleteUtility = (req, res) => {
+const utility_deleteUtility = (req, res) => {
     const id = parseInt(req.params.id);
-    const success = rent_utilitiesService.rent_remove(id);
+    const success = utility_indicatorService.utility_remove(id);
     
     if (!success) {
         return res.status(404).json({ error: 'Тариф не найден' });
@@ -60,9 +60,9 @@ const rent_deleteUtility = (req, res) => {
 };
 
 module.exports = {
-    rent_getAllUtilities,
-    rent_getUtilityById,
-    rent_createUtility,
-    rent_updateUtility,
-    rent_deleteUtility
+    utility_getAllUtilities,
+    utility_getUtilityById,
+    utility_createUtility,
+    utility_updateUtility,
+    utility_deleteUtility
 };

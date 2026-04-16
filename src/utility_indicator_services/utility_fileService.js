@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const rent_readData = (filePath) => {
+const utility_readData = (filePath) => {
     try {
         const data = fs.readFileSync(filePath, 'utf8');
         return JSON.parse(data);
@@ -10,7 +10,7 @@ const rent_readData = (filePath) => {
     }
 };
 
-const rent_writeData = (filePath, data) => {
+const utility_writeData = (filePath, data) => {
     try {
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');
     } catch (err) {
@@ -19,6 +19,6 @@ const rent_writeData = (filePath, data) => {
 };
 
 module.exports = {
-    rent_readData,
-    rent_writeData
+    utility_readData,
+    utility_writeData
 };

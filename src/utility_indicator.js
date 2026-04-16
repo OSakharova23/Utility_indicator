@@ -1,16 +1,16 @@
 const express = require('express');
 const path = require('path');
-const rent_utilitiesRouter = require('./rent_routes/rent_utilities');
-const rent_utilitiesService = require('./rent_services/rent_utilitiesService');
+const utility_indicatorRouter = require('./utility_indicator_routes/utility_indicatorRouter');
+const utility_indicatorService = require('./utility_indicator_services/utility_indicatorService');
 
 const app = express();
 const PORT = 3000;
 
 // Определяем путь к файлу данных
-const RENT_DATA_FILE_PATH = path.join(__dirname, 'rent_data/rent_utilities.json');
+const UTILITY_DATA_FILE_PATH = path.join(__dirname, 'utility_indicator_data/utility_indicator.json');
 
 // Инициализируем сервис с путем к файлу данных
-rent_utilitiesService.rent_init(RENT_DATA_FILE_PATH);
+utility_indicatorService.utility_init(UTILITY_DATA_FILE_PATH);
 
 // 1. Встроенный middleware для парсинга JSON
 app.use(express.json());
@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 });
 
 // 3. Подключение маршрутов
-app.use('/rent_utilities', rent_utilitiesRouter);
+app.use('/utility_indicator', utility_indicatorRouter);
 
 // 4. Глобальная обработка 404
 app.use((req, res) => {
