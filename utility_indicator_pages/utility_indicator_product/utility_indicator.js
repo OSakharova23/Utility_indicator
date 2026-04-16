@@ -1,12 +1,13 @@
 import {utility_indicator_ProductComponent} from "../../utility_indicator_components/utility_indicator_product/utility_indicator.js";
 import {utility_indicator_MainPage} from "../utility_indicator_main/utility_indicator.js";
 import {utility_indicator_HomeButtonComponent} from "../../utility_indicator_components/utility_indicator_home-button/utility_indicator.js";
-
+import {utility_indicator_3dViewerComponent} from "../../utility_indicator_components/utility_indicator_3d-viewer/utility_indicator.js";
 
 export class utility_indicator_ProductPage {
     constructor(utility_indicator_parent, utility_indicator_id) {
         this.utility_indicator_parent = utility_indicator_parent;
         this.utility_indicator_id = utility_indicator_id;
+        this.threeDViewer = null;
     }
 
     utility_indicator_getServiceData() {
@@ -50,6 +51,10 @@ export class utility_indicator_ProductPage {
         return document.getElementById('utility_indicator_product-page');
     }
 
+    get utility_indicator_3dContainer() {
+        return document.getElementById('utility_indicator_3d-viewer-container-root');
+    }
+
     utility_indicator_getHTML() {
         return (
             `
@@ -62,15 +67,31 @@ export class utility_indicator_ProductPage {
                             </div>
                         </div>
                     </div>
-                    <div class="container mt-4"></div>
+                    <div class="container">
+                        <div id="utility_indicator_product-component-container"></div>
+                        <div id="utility_indicator_3d-viewer-container-root" style="margin-top: 30px;"></div>
+                    </div>
                 </div>
             `
         )
     }
 
     utility_indicator_goHome() {
+        // Очищаем 3D viewer перед уходом со страницы
+        if (this.threeDViewer) {
+            this.threeDViewer.utility_indicator_dispose();
+            this.threeDViewer = null;
+        }
         const mainPage = new utility_indicator_MainPage(this.utility_indicator_parent);
         mainPage.utility_indicator_render();
+    }
+
+    async utility_indicator_render3dViewer() {
+        const threeDContainer = document.getElementById('utility_indicator_3d-viewer-container-root');
+        if (threeDContainer) {
+            this.threeDViewer = new utility_indicator_3dViewerComponent(threeDContainer);
+            await this.threeDViewer.utility_indicator_render(parseInt(this.utility_indicator_id));
+        }
     }
 
     utility_indicator_render() {
@@ -78,12 +99,18 @@ export class utility_indicator_ProductPage {
         const html = this.utility_indicator_getHTML();
         this.utility_indicator_parent.insertAdjacentHTML('beforeend', html);
         
+        // Рендер кнопки "Домой"
         const utility_indicator_homeButtonContainer = document.getElementById('utility_indicator_home-button-container');
         const utility_indicator_homeButton = new utility_indicator_HomeButtonComponent(utility_indicator_homeButtonContainer);
         utility_indicator_homeButton.utility_indicator_render(this.utility_indicator_goHome.bind(this));
 
+        // Рендер информации о продукте
         const data = this.utility_indicator_getServiceData();
-        const product = new utility_indicator_ProductComponent(this.utility_indicator_pageRoot);
+        const productContainer = document.getElementById('utility_indicator_product-component-container');
+        const product = new utility_indicator_ProductComponent(productContainer);
         product.utility_indicator_render(data);
+        
+        // Рендер 3D модели
+        this.utility_indicator_render3dViewer();
     }
 }
