@@ -3,7 +3,7 @@ export class utility_indicator_ProductCardComponent {
         this.utility_indicator_parent = utility_indicator_parent;
     }
 
-    utility_indicator_getHTML(utility_indicator_data, utility_indicator_onDelete) {
+    utility_indicator_getHTML(utility_indicator_data, utility_indicator_onDelete, utility_indicator_onEdit) {
         const rows = [];
         for (let i = 0; i < utility_indicator_data.length; i += 3) {
             rows.push(utility_indicator_data.slice(i, i + 3));
@@ -25,9 +25,14 @@ export class utility_indicator_ProductCardComponent {
                                 <span style="background-color: white; color: #6e9fcf; padding: 5px 12px; border-radius: 5px; font-size: 0.9rem; font-weight: 500; display: inline-block;">${item.tariff}</span>
                             </div>
                             <p class="card-text text-muted flex-grow-1">${item.text || 'Нажмите для подробной информации'}</p>
-                            <button class="btn w-100 mt-auto" id="utility_indicator_product-card-${item.id}" data-id="${item.id}" style="background-color: #ff8f00; color: white; border: none;">
-                                Подробнее
-                            </button>
+                            <div style="display: flex; gap: 10px; margin-top: auto;">
+                                <button class="btn w-100" id="utility_indicator_product-card-${item.id}" data-id="${item.id}" style="background-color: #ff8f00; color: white; border: none; flex: 1;">
+                                    Подробнее
+                                </button>
+                                <button class="utility_indicator_edit-card-btn btn w-100" data-id="${item.id}" style="background-color: #ff8f00; color: white; border: none; flex: 1;">
+                                    Редактировать
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -57,7 +62,7 @@ export class utility_indicator_ProductCardComponent {
         `;
     }
 
-    utility_indicator_addListeners(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete) {
+    utility_indicator_addListeners(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete, utility_indicator_onEdit) {
         utility_indicator_data.forEach((item) => {
             const button = document.getElementById(`utility_indicator_product-card-${item.id}`);
             if (button) {
@@ -75,12 +80,23 @@ export class utility_indicator_ProductCardComponent {
                 }
             });
         });
+        
+        const utility_indicator_editButtons = document.querySelectorAll('.utility_indicator_edit-card-btn');
+        utility_indicator_editButtons.forEach(button => {
+            button.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const cardId = button.getAttribute('data-id');
+                if (utility_indicator_onEdit) {
+                    utility_indicator_onEdit(cardId);
+                }
+            });
+        });
     }
 
-    utility_indicator_render(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete) {
-        const html = this.utility_indicator_getHTML(utility_indicator_data, utility_indicator_onDelete);
+    utility_indicator_render(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete, utility_indicator_onEdit) {
+        const html = this.utility_indicator_getHTML(utility_indicator_data, utility_indicator_onDelete, utility_indicator_onEdit);
         this.utility_indicator_parent.innerHTML = '';
         this.utility_indicator_parent.insertAdjacentHTML('beforeend', html);
-        this.utility_indicator_addListeners(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete);
+        this.utility_indicator_addListeners(utility_indicator_data, utility_indicator_onClickCard, utility_indicator_onDelete, utility_indicator_onEdit);
     }
 }
