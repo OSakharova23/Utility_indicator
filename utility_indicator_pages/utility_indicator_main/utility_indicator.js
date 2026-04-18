@@ -10,16 +10,17 @@ export class utility_indicator_MainPage {
         this.utility_indicator_parent = utility_indicator_parent;
         this.utility_indicator_products = [];
         this.utility_indicator_filteredProducts = [];
-        this.utility_indicator_nextId = 6;
     }
 
-    utility_indicator_loadProducts(searchTerm = '') {
-        let url = utility_indicator_urls.utility_indicator_getServices();
-        if (searchTerm && searchTerm.trim()) {
-            url += `?title=${encodeURIComponent(searchTerm.trim())}`;
-        }
-        
-        utility_indicator_ajax.utility_indicator_get(url, (data, status) => {
+    async utility_indicator_loadProducts(searchTerm = '') {
+        try {
+            let url = utility_indicator_urls.utility_indicator_getServices();
+            if (searchTerm && searchTerm.trim()) {
+                url += `?title=${encodeURIComponent(searchTerm.trim())}`;
+            }
+            
+            const { data, status } = await utility_indicator_ajax.utility_indicator_get(url);
+            
             if (status === 200 && data) {
                 this.utility_indicator_products = data;
                 this.utility_indicator_filteredProducts = [...data];
@@ -29,10 +30,11 @@ export class utility_indicator_MainPage {
                 if (utility_indicator_noResultsDiv) {
                     utility_indicator_noResultsDiv.style.display = this.utility_indicator_filteredProducts.length === 0 ? 'block' : 'none';
                 }
-            } else {
-                console.error('Ошибка загрузки данных:', status);
             }
-        });
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+            alert('Не удалось загрузить данные');
+        }
     }
 
     utility_indicator_filterProducts(utility_indicator_searchTerm) {
@@ -50,48 +52,53 @@ export class utility_indicator_MainPage {
         editPage.utility_indicator_render();
     }
 
-    utility_indicator_deleteCard(cardId) {
+    async utility_indicator_deleteCard(cardId) {
         if (confirm('Вы уверены, что хотите удалить эту услугу?')) {
-            utility_indicator_ajax.utility_indicator_delete(
-                utility_indicator_urls.utility_indicator_removeService(cardId),
-                (data, status) => {
-                    if (status === 204) {
-                        alert('Услуга успешно удалена');
-                        this.utility_indicator_loadProducts();
-                    } else {
-                        alert('Ошибка при удалении услуги');
-                        console.error('Ошибка удаления:', status, data);
-                    }
+            try {
+                const { status } = await utility_indicator_ajax.utility_indicator_delete(
+                    utility_indicator_urls.utility_indicator_removeService(cardId)
+                );
+                
+                if (status === 204) {
+                    alert('Услуга успешно удалена');
+                    this.utility_indicator_loadProducts();
                 }
-            );
+            } catch (error) {
+                alert('Ошибка при удалении услуги');
+                console.error('Ошибка удаления:', error);
+            }
         }
     }
 
-    utility_indicator_addCard() {
-        // Копирование первой карточки (как было в оригинале)
-        if (this.utility_indicator_filteredProducts.length === 0) return;
+    async utility_indicator_addCard() {
+        if (this.utility_indicator_filteredProducts.length === 0) {
+            alert('Нет услуг для копирования');
+            return;
+        }
         
         const utility_indicator_firstCard = this.utility_indicator_filteredProducts[0];
+        
         const utility_indicator_newCard = {
-            title: utility_indicator_firstCard.title,
+            title: utility_indicator_firstCard.title + " (копия)",
             src: utility_indicator_firstCard.src,
             tariff: utility_indicator_firstCard.tariff,
-            description: utility_indicator_firstCard.description
+            description: utility_indicator_firstCard.description || "Описание услуги"
         };
         
-        utility_indicator_ajax.utility_indicator_post(
-            utility_indicator_urls.utility_indicator_createService(),
-            utility_indicator_newCard,
-            (data, status) => {
-                if (status === 201) {
-                    alert('Услуга успешно добавлена');
-                    this.utility_indicator_loadProducts();
-                } else {
-                    alert('Ошибка при добавлении услуги');
-                    console.error('Ошибка создания:', status, data);
-                }
+        try {
+            const { status } = await utility_indicator_ajax.utility_indicator_post(
+                utility_indicator_urls.utility_indicator_createService(),
+                utility_indicator_newCard
+            );
+            
+            if (status === 201) {
+                alert('Услуга успешно добавлена');
+                this.utility_indicator_loadProducts();
             }
-        );
+        } catch (error) {
+            alert('Ошибка при добавлении услуги');
+            console.error('Ошибка создания:', error);
+        }
     }
 
     utility_indicator_updateProductCards() {

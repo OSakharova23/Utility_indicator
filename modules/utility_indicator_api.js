@@ -1,15 +1,20 @@
-export class UtilityIndicatorAjax {
+// modules/utility_indicator_api.js
+
+export class UtilityIndicatorApi {
+    
     /**
      * GET запрос через fetch
      * @param {string} url - Адрес запроса
-     * @returns {Promise} - Промис с данными
+     * @returns {Promise} - Promise с данными
      */
     async utility_indicator_get(url) {
         try {
             const response = await fetch(url);
+            
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+            
             const data = await response.json();
             return { data, status: response.status };
         } catch (error) {
@@ -22,7 +27,7 @@ export class UtilityIndicatorAjax {
      * POST запрос через fetch
      * @param {string} url - Адрес запроса
      * @param {object} data - Данные для отправки
-     * @returns {Promise} - Промис с данными
+     * @returns {Promise} - Promise с данными
      */
     async utility_indicator_post(url, data) {
         try {
@@ -30,7 +35,6 @@ export class UtilityIndicatorAjax {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
@@ -51,7 +55,7 @@ export class UtilityIndicatorAjax {
      * PATCH запрос через fetch
      * @param {string} url - Адрес запроса
      * @param {object} data - Данные для обновления
-     * @returns {Promise} - Промис с данными
+     * @returns {Promise} - Promise с данными
      */
     async utility_indicator_patch(url, data) {
         try {
@@ -59,7 +63,6 @@ export class UtilityIndicatorAjax {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json'
                 },
                 body: JSON.stringify(data)
             });
@@ -79,26 +82,19 @@ export class UtilityIndicatorAjax {
     /**
      * DELETE запрос через fetch
      * @param {string} url - Адрес запроса
-     * @returns {Promise} - Промис с данными
+     * @returns {Promise} - Promise с статусом
      */
     async utility_indicator_delete(url) {
         try {
             const response = await fetch(url, {
                 method: 'DELETE',
-                headers: {
-                    'Accept': 'application/json'
-                }
             });
             
             if (!response.ok && response.status !== 204) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
-            let data = null;
-            if (response.status !== 204) {
-                data = await response.json();
-            }
-            return { data, status: response.status };
+            return { status: response.status };
         } catch (error) {
             console.error('DELETE request error:', error);
             throw error;
@@ -106,4 +102,4 @@ export class UtilityIndicatorAjax {
     }
 }
 
-export const utility_indicator_ajax = new UtilityIndicatorAjax();
+export const utility_indicator_api = new UtilityIndicatorApi();

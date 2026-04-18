@@ -29,7 +29,10 @@ export class utility_indicator_EditPage {
                                     <h3 class="mb-0" style="color: #333;">Редактирование услуги</h3>
                                 </div>
                                 <div class="card-body" style="padding: 30px;">
-                                    <form id="utility_indicator_edit-form">
+                                    <div id="utility_indicator_loading" style="text-align: center; padding: 50px;">
+                                        Загрузка данных...
+                                    </div>
+                                    <form id="utility_indicator_edit-form" style="display: none;">
                                         <div class="mb-3">
                                             <label for="utility_indicator_title" class="form-label" style="font-weight: 500;">Название услуги</label>
                                             <input type="text" class="form-control" id="utility_indicator_title" required style="border: 1px solid #91bbe6; border-radius: 5px; padding: 10px;">
@@ -64,19 +67,30 @@ export class utility_indicator_EditPage {
         `;
     }
 
-    utility_indicator_loadData() {
-        utility_indicator_ajax.utility_indicator_get(
-            utility_indicator_urls.utility_indicator_getServiceById(this.utility_indicator_id),
-            (data, status) => {
-                if (status === 200 && data) {
-                    this.utility_indicator_serviceData = data;
-                    this.utility_indicator_fillForm();
-                } else {
-                    console.error('Ошибка загрузки данных');
-                    alert('Не удалось загрузить данные услуги');
-                }
+    async utility_indicator_loadData() {
+        console.log('Загрузка данных для ID:', this.utility_indicator_id);
+        
+        const loadingDiv = document.getElementById('utility_indicator_loading');
+        const form = document.getElementById('utility_indicator_edit-form');
+        
+        try {
+            const { data, status } = await utility_indicator_ajax.utility_indicator_get(
+                utility_indicator_urls.utility_indicator_getServiceById(this.utility_indicator_id)
+            );
+            
+            if (status === 200 && data) {
+                this.utility_indicator_serviceData = data;
+                if (loadingDiv) loadingDiv.style.display = 'none';
+                if (form) form.style.display = 'block';
+                this.utility_indicator_fillForm();
             }
-        );
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+            if (loadingDiv) {
+                loadingDiv.innerHTML = 'Ошибка загрузки данных. <button onclick="location.reload()">Попробовать снова</button>';
+            }
+            alert('Не удалось загрузить данные услуги');
+        }
     }
 
     utility_indicator_fillForm() {
@@ -93,7 +107,7 @@ export class utility_indicator_EditPage {
         if (descriptionInput) descriptionInput.value = this.utility_indicator_serviceData.description || '';
     }
 
-    utility_indicator_saveData(event) {
+    async utility_indicator_saveData(event) {
         event.preventDefault();
         
         const updatedData = {
@@ -103,19 +117,20 @@ export class utility_indicator_EditPage {
             description: document.getElementById('utility_indicator_description').value
         };
         
-        utility_indicator_ajax.utility_indicator_patch(
-            utility_indicator_urls.utility_indicator_updateService(this.utility_indicator_id),
-            updatedData,
-            (data, status) => {
-                if (status === 200) {
-                    alert('Услуга успешно обновлена!');
-                    this.utility_indicator_goBack();
-                } else {
-                    alert('Ошибка при обновлении услуги');
-                    console.error('Ошибка:', status, data);
-                }
+        try {
+            const { status } = await utility_indicator_ajax.utility_indicator_patch(
+                utility_indicator_urls.utility_indicator_updateService(this.utility_indicator_id),
+                updatedData
+            );
+            
+            if (status === 200) {
+                alert('Услуга успешно обновлена!');
+                this.utility_indicator_goBack();
             }
-        );
+        } catch (error) {
+            alert('Ошибка при обновлении услуги');
+            console.error('Ошибка:', error);
+        }
     }
 
     utility_indicator_goBack() {

@@ -11,18 +11,20 @@ export class utility_indicator_ProductPage {
         this.utility_indicator_serviceData = null;
     }
 
-    utility_indicator_loadServiceData() {
-        utility_indicator_ajax.utility_indicator_get(
-            utility_indicator_urls.utility_indicator_getServiceById(this.utility_indicator_id),
-            (data, status) => {
-                if (status === 200 && data) {
-                    this.utility_indicator_serviceData = data;
-                    this.utility_indicator_renderProduct();
-                } else {
-                    console.error('Ошибка загрузки данных услуги');
-                }
+    async utility_indicator_loadServiceData() {
+        try {
+            const { data, status } = await utility_indicator_ajax.utility_indicator_get(
+                utility_indicator_urls.utility_indicator_getServiceById(this.utility_indicator_id)
+            );
+            
+            if (status === 200 && data) {
+                this.utility_indicator_serviceData = data;
+                this.utility_indicator_renderProduct();
             }
-        );
+        } catch (error) {
+            console.error('Ошибка загрузки данных услуги:', error);
+            alert('Не удалось загрузить данные услуги');
+        }
     }
 
     utility_indicator_renderProduct() {
