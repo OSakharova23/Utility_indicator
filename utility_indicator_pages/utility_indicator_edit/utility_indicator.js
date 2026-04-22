@@ -108,7 +108,6 @@ export class utility_indicator_EditPage {
             updatedData,
             (data, status) => {
                 if (status === 200) {
-                    alert('Услуга успешно обновлена!');
                     this.utility_indicator_goBack();
                 } else {
                     alert('Ошибка при обновлении услуги');

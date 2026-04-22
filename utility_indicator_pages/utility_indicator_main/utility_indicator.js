@@ -51,20 +51,17 @@ export class utility_indicator_MainPage {
     }
 
     utility_indicator_deleteCard(cardId) {
-        if (confirm('Вы уверены, что хотите удалить эту услугу?')) {
-            utility_indicator_ajax.utility_indicator_delete(
-                utility_indicator_urls.utility_indicator_removeService(cardId),
-                (data, status) => {
-                    if (status === 204) {
-                        alert('Услуга успешно удалена');
-                        this.utility_indicator_loadProducts();
-                    } else {
-                        alert('Ошибка при удалении услуги');
-                        console.error('Ошибка удаления:', status, data);
-                    }
+        utility_indicator_ajax.utility_indicator_delete(
+            utility_indicator_urls.utility_indicator_removeService(cardId),
+            (data, status) => {
+                if (status === 204) {
+                    this.utility_indicator_loadProducts();
+                } else {
+                    alert('Ошибка при удалении услуги');
+                    console.error('Ошибка удаления:', status, data);
                 }
-            );
-        }
+            }
+        );
     }
 
     utility_indicator_addCard() {
@@ -84,7 +81,6 @@ export class utility_indicator_MainPage {
             utility_indicator_newCard,
             (data, status) => {
                 if (status === 201) {
-                    alert('Услуга успешно добавлена');
                     this.utility_indicator_loadProducts();
                 } else {
                     alert('Ошибка при добавлении услуги');
