@@ -6,31 +6,40 @@ const utility_indicatorService = require('./utility_indicator_services/utility_i
 const app = express();
 const PORT = 3000;
 
-// ===== РАЗДАЧА СТАТИЧЕСКИХ ФАЙЛОВ (СОБРАННЫЙ ФРОНТЕНД) =====
-// Папка public должна быть в корне проекта (на одном уровне с src)
+// Раздача статики
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Определяем путь к файлу данных
+// Путь к файлу данных
 const UTILITY_DATA_FILE_PATH = path.join(__dirname, 'utility_indicator_data/utility_indicator.json');
-
-// Инициализируем сервис с путем к файлу данных
 utility_indicatorService.utility_init(UTILITY_DATA_FILE_PATH);
 
-// 1. Встроенный middleware для парсинга JSON
+// Парсинг JSON
 app.use(express.json());
 
-// 2. Логирующий middleware
+// Парсинг text/plain (важно для CORS обхода!)
+app.use(express.text({ type: 'text/plain' }));
+
+// Преобразование text/plain в JSON
+app.use((req, res, next) => {
+    if (req.is('text/plain') && req.body && typeof req.body === 'string') {
+        try {
+            req.body = JSON.parse(req.body);
+        } catch (e) {}
+    }
+    next();
+});
+
+// Логирование
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// 3. Подключение маршрутов API
+// Маршруты API
 app.use('/utility_indicator', utility_indicatorRouter);
 
-// 4. Для всех остальных маршрутов отдаем HTML (SPA)
+// SPA fallback
 app.use((req, res, next) => {
-    // Если запрос не начинается с /utility_indicator и не является статическим файлом
     if (!req.path.startsWith('/utility_indicator') && !req.path.includes('.')) {
         res.sendFile(path.join(__dirname, '../public', 'utility_indicator.html'));
     } else {
@@ -38,7 +47,7 @@ app.use((req, res, next) => {
     }
 });
 
-// 5. Глобальная обработка 404 для API
+// 404
 app.use((req, res) => {
     res.status(404).json({ error: 'Маршрут не найден' });
 });
@@ -49,12 +58,8 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Внутренняя ошибка сервера' });
 });
 
-// Настройка форматирования JSON ответов
 app.set('json spaces', 2);
 
-// 6. Запуск сервера
 app.listen(PORT, () => {
-    console.log(`Сервер запущен по адресу http://localhost:${PORT}`);
-    console.log(`API доступно по адресу http://localhost:${PORT}/utility_indicator`);
-    console.log(`Фронтенд доступен по адресу http://localhost:${PORT}`);
+    console.log(`Сервер запущен: http://localhost:${PORT}`);
 });

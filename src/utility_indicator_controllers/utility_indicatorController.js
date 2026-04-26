@@ -18,9 +18,20 @@ const utility_getUtilityById = (req, res) => {
 };
 
 const utility_createUtility = (req, res) => {
-    const { title, src, tariff, description } = req.body;
+    // Поддержка body как JSON или как строки (text/plain)
+    let body = req.body;
     
-    // Валидация
+    // Если body - строка (пришло как text/plain), парсим в JSON
+    if (typeof body === 'string') {
+        try {
+            body = JSON.parse(body);
+        } catch (e) {
+            return res.status(400).json({ error: 'Неверный формат данных' });
+        }
+    }
+    
+    const { title, src, tariff, description } = body;
+    
     if (!title || !src || !tariff || !description) {
         return res.status(400).json({ 
             error: 'Не все поля заполнены',
@@ -39,7 +50,17 @@ const utility_createUtility = (req, res) => {
 
 const utility_updateUtility = (req, res) => {
     const id = parseInt(req.params.id);
-    const updatedUtility = utility_indicatorService.utility_update(id, req.body);
+    
+    let body = req.body;
+    if (typeof body === 'string') {
+        try {
+            body = JSON.parse(body);
+        } catch (e) {
+            return res.status(400).json({ error: 'Неверный формат данных' });
+        }
+    }
+    
+    const updatedUtility = utility_indicatorService.utility_update(id, body);
     
     if (!updatedUtility) {
         return res.status(404).json({ error: 'Тариф не найден' });
@@ -56,7 +77,7 @@ const utility_deleteUtility = (req, res) => {
         return res.status(404).json({ error: 'Тариф не найден' });
     }
     
-    res.status(204).send(); // 204 No Content
+    res.status(204).send();
 };
 
 module.exports = {
