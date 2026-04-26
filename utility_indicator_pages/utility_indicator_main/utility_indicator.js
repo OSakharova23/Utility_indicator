@@ -10,7 +10,6 @@ export class utility_indicator_MainPage {
         this.utility_indicator_parent = utility_indicator_parent;
         this.utility_indicator_products = [];
         this.utility_indicator_filteredProducts = [];
-        this.utility_indicator_nextId = 6;
     }
 
     utility_indicator_loadProducts(searchTerm = '') {
@@ -51,13 +50,13 @@ export class utility_indicator_MainPage {
     }
 
     utility_indicator_deleteCard(cardId) {
+        // Убрано подтверждение удаления
         utility_indicator_ajax.utility_indicator_delete(
             utility_indicator_urls.utility_indicator_removeService(cardId),
             (data, status) => {
                 if (status === 204) {
                     this.utility_indicator_loadProducts();
                 } else {
-                    alert('Ошибка при удалении услуги');
                     console.error('Ошибка удаления:', status, data);
                 }
             }
@@ -65,29 +64,9 @@ export class utility_indicator_MainPage {
     }
 
     utility_indicator_addCard() {
-        // Копирование первой карточки (как было в оригинале)
-        if (this.utility_indicator_filteredProducts.length === 0) return;
-        
-        const utility_indicator_firstCard = this.utility_indicator_filteredProducts[0];
-        const utility_indicator_newCard = {
-            title: utility_indicator_firstCard.title,
-            src: utility_indicator_firstCard.src,
-            tariff: utility_indicator_firstCard.tariff,
-            description: utility_indicator_firstCard.description
-        };
-        
-        utility_indicator_ajax.utility_indicator_post(
-            utility_indicator_urls.utility_indicator_createService(),
-            utility_indicator_newCard,
-            (data, status) => {
-                if (status === 201) {
-                    this.utility_indicator_loadProducts();
-                } else {
-                    alert('Ошибка при добавлении услуги');
-                    console.error('Ошибка создания:', status, data);
-                }
-            }
-        );
+        // Открываем страницу редактирования без ID (создание новой услуги)
+        const editPage = new utility_indicator_EditPage(this.utility_indicator_parent, null);
+        editPage.utility_indicator_render();
     }
 
     utility_indicator_updateProductCards() {

@@ -3,14 +3,19 @@ import { utility_indicator_urls } from "../../modules/utility_indicator_urls.js"
 import { utility_indicator_MainPage } from "../utility_indicator_main/utility_indicator.js";
 import { utility_indicator_HomeButtonComponent } from "../../utility_indicator_components/utility_indicator_home-button/utility_indicator.js";
 
+// URL изображения по умолчанию
+const DEFAULT_IMAGE_URL = "https://avatars.mds.yandex.net/i?id=e74a5eca858c831fb3971b48dc7a6befed46c5a6-12439438-images-thumbs&n=13";
+
 export class utility_indicator_EditPage {
     constructor(utility_indicator_parent, utility_indicator_id) {
         this.utility_indicator_parent = utility_indicator_parent;
-        this.utility_indicator_id = utility_indicator_id;
+        this.utility_indicator_id = utility_indicator_id; // может быть null для создания новой услуги
         this.utility_indicator_serviceData = null;
+        this.utility_indicator_isNew = !utility_indicator_id; // true если создаем новую
     }
 
     utility_indicator_getHTML() {
+        const titleText = this.utility_indicator_isNew ? 'Добавление новой услуги' : 'Редактирование услуги';
         return `
             <div id="utility_indicator_edit-page">
                 <div id="utility_indicator_header-container" class="header" style="background-color: white; border-bottom: 1px solid #e0e0e0; padding: 1rem 0; margin-bottom: 2rem;">
@@ -26,17 +31,23 @@ export class utility_indicator_EditPage {
                         <div class="col-md-8">
                             <div class="card" style="border: 1px solid #91bbe6; border-radius: 10px;">
                                 <div class="card-header" style="background-color: #edf4fc; padding: 20px; border-bottom: 1px solid #91bbe6;">
-                                    <h3 class="mb-0" style="color: #333;">Редактирование услуги</h3>
+                                    <h3 class="mb-0" style="color: #333;">${titleText}</h3>
                                 </div>
                                 <div class="card-body" style="padding: 30px;">
-                                    <form id="utility_indicator_edit-form">
+                                    ${!this.utility_indicator_isNew ? `
+                                    <div id="utility_indicator_loading" style="text-align: center; padding: 50px;">
+                                        Загрузка данных...
+                                    </div>
+                                    ` : ''}
+                                    <form id="utility_indicator_edit-form" style="${!this.utility_indicator_isNew ? 'display: none;' : ''}">
                                         <div class="mb-3">
                                             <label for="utility_indicator_title" class="form-label" style="font-weight: 500;">Название услуги</label>
                                             <input type="text" class="form-control" id="utility_indicator_title" required style="border: 1px solid #91bbe6; border-radius: 5px; padding: 10px;">
                                         </div>
                                         <div class="mb-3">
                                             <label for="utility_indicator_src" class="form-label" style="font-weight: 500;">URL изображения</label>
-                                            <input type="url" class="form-control" id="utility_indicator_src" required style="border: 1px solid #91bbe6; border-radius: 5px; padding: 10px;">
+                                            <input type="url" class="form-control" id="utility_indicator_src" placeholder="${DEFAULT_IMAGE_URL}" style="border: 1px solid #91bbe6; border-radius: 5px; padding: 10px;">
+                                            <small class="form-text text-muted">Оставьте пустым, чтобы использовать изображение по умолчанию</small>
                                         </div>
                                         <div class="mb-3">
                                             <label for="utility_indicator_tariff" class="form-label" style="font-weight: 500;">Тариф</label>
@@ -65,15 +76,24 @@ export class utility_indicator_EditPage {
     }
 
     utility_indicator_loadData() {
+        if (this.utility_indicator_isNew) return;
+        
+        const loadingDiv = document.getElementById('utility_indicator_loading');
+        const form = document.getElementById('utility_indicator_edit-form');
+        
         utility_indicator_ajax.utility_indicator_get(
             utility_indicator_urls.utility_indicator_getServiceById(this.utility_indicator_id),
             (data, status) => {
                 if (status === 200 && data) {
                     this.utility_indicator_serviceData = data;
+                    if (loadingDiv) loadingDiv.style.display = 'none';
+                    if (form) form.style.display = 'block';
                     this.utility_indicator_fillForm();
                 } else {
                     console.error('Ошибка загрузки данных');
-                    alert('Не удалось загрузить данные услуги');
+                    if (loadingDiv) {
+                        loadingDiv.innerHTML = 'Ошибка загрузки данных. Попробуйте снова.';
+                    }
                 }
             }
         );
@@ -93,28 +113,54 @@ export class utility_indicator_EditPage {
         if (descriptionInput) descriptionInput.value = this.utility_indicator_serviceData.description || '';
     }
 
-    utility_indicator_saveData(event) {
-        event.preventDefault();
+    utility_indicator_getFormData() {
+        let srcValue = document.getElementById('utility_indicator_src').value;
         
-        const updatedData = {
+        // Если поле URL пустое, используем изображение по умолчанию
+        if (!srcValue || srcValue.trim() === '') {
+            srcValue = DEFAULT_IMAGE_URL;
+        }
+        
+        return {
             title: document.getElementById('utility_indicator_title').value,
-            src: document.getElementById('utility_indicator_src').value,
+            src: srcValue,
             tariff: document.getElementById('utility_indicator_tariff').value,
             description: document.getElementById('utility_indicator_description').value
         };
+    }
+
+    utility_indicator_saveData(event) {
+        event.preventDefault();
         
-        utility_indicator_ajax.utility_indicator_patch(
-            utility_indicator_urls.utility_indicator_updateService(this.utility_indicator_id),
-            updatedData,
-            (data, status) => {
-                if (status === 200) {
-                    this.utility_indicator_goBack();
-                } else {
-                    alert('Ошибка при обновлении услуги');
-                    console.error('Ошибка:', status, data);
+        const updatedData = this.utility_indicator_getFormData();
+        
+        if (this.utility_indicator_isNew) {
+            // Создание новой услуги
+            utility_indicator_ajax.utility_indicator_post(
+                utility_indicator_urls.utility_indicator_createService(),
+                updatedData,
+                (data, status) => {
+                    if (status === 201) {
+                        this.utility_indicator_goBack();
+                    } else {
+                        console.error('Ошибка при создании услуги:', status, data);
+                    }
                 }
-            }
-        );
+            );
+        } else {
+            // Обновление существующей
+            utility_indicator_ajax.utility_indicator_patch(
+                utility_indicator_urls.utility_indicator_updateService(this.utility_indicator_id),
+                updatedData,
+                (data, status) => {
+                    if (status === 200) {
+                        this.utility_indicator_goBack();
+                    } else {
+                        console.error('Ошибка при обновлении услуги:', status, data);
+                    }
+                }
+            );
+        }
     }
 
     utility_indicator_goBack() {
@@ -143,7 +189,16 @@ export class utility_indicator_EditPage {
         const utility_indicator_homeButton = new utility_indicator_HomeButtonComponent(utility_indicator_homeButtonContainer);
         utility_indicator_homeButton.utility_indicator_render(this.utility_indicator_goBack.bind(this));
         
-        this.utility_indicator_loadData();
+        // Для новой карточки устанавливаем значение по умолчанию в поле URL
+        if (this.utility_indicator_isNew) {
+            const srcInput = document.getElementById('utility_indicator_src');
+            if (srcInput) {
+                srcInput.value = DEFAULT_IMAGE_URL;
+            }
+        } else {
+            this.utility_indicator_loadData();
+        }
+        
         this.utility_indicator_addListeners();
     }
 }

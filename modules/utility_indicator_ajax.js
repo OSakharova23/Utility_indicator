@@ -17,7 +17,7 @@ export class UtilityIndicatorAjax {
     }
 
     /**
-     * POST запрос
+     * POST запрос - использует text/plain для обхода CORS
      * @param {string} url - Адрес запроса
      * @param {object} data - Данные для отправки
      * @param {function} callback - Функция обратного вызова (data, status)
@@ -25,7 +25,8 @@ export class UtilityIndicatorAjax {
     utility_indicator_post(url, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open('POST', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        // Используем text/plain вместо application/json для обхода CORS
+        xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.send(JSON.stringify(data));
 
         xhr.onreadystatechange = () => {
@@ -36,7 +37,7 @@ export class UtilityIndicatorAjax {
     }
 
     /**
-     * PATCH запрос
+     * PATCH запрос - использует text/plain для обхода CORS
      * @param {string} url - Адрес запроса
      * @param {object} data - Данные для обновления
      * @param {function} callback - Функция обратного вызова (data, status)
@@ -44,7 +45,8 @@ export class UtilityIndicatorAjax {
     utility_indicator_patch(url, data, callback) {
         const xhr = new XMLHttpRequest();
         xhr.open('PATCH', url);
-        xhr.setRequestHeader('Content-Type', 'application/json');
+        // Используем text/plain вместо application/json для обхода CORS
+        xhr.setRequestHeader('Content-Type', 'text/plain');
         xhr.send(JSON.stringify(data));
 
         xhr.onreadystatechange = () => {
