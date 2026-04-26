@@ -23,7 +23,6 @@ export class utility_indicator_ProductPage {
             }
         } catch (error) {
             console.error('Ошибка загрузки данных услуги:', error);
-            alert('Не удалось загрузить данные услуги');
         }
     }
 

@@ -33,7 +33,6 @@ export class utility_indicator_MainPage {
             }
         } catch (error) {
             console.error('Ошибка загрузки данных:', error);
-            alert('Не удалось загрузить данные');
         }
     }
 
@@ -53,52 +52,24 @@ export class utility_indicator_MainPage {
     }
 
     async utility_indicator_deleteCard(cardId) {
-        if (confirm('Вы уверены, что хотите удалить эту услугу?')) {
-            try {
-                const { status } = await utility_indicator_ajax.utility_indicator_delete(
-                    utility_indicator_urls.utility_indicator_removeService(cardId)
-                );
-                
-                if (status === 204) {
-                    alert('Услуга успешно удалена');
-                    this.utility_indicator_loadProducts();
-                }
-            } catch (error) {
-                alert('Ошибка при удалении услуги');
-                console.error('Ошибка удаления:', error);
-            }
-        }
-    }
-
-    async utility_indicator_addCard() {
-        if (this.utility_indicator_filteredProducts.length === 0) {
-            alert('Нет услуг для копирования');
-            return;
-        }
-        
-        const utility_indicator_firstCard = this.utility_indicator_filteredProducts[0];
-        
-        const utility_indicator_newCard = {
-            title: utility_indicator_firstCard.title + " (копия)",
-            src: utility_indicator_firstCard.src,
-            tariff: utility_indicator_firstCard.tariff,
-            description: utility_indicator_firstCard.description || "Описание услуги"
-        };
-        
+        // Убрано подтверждение удаления
         try {
-            const { status } = await utility_indicator_ajax.utility_indicator_post(
-                utility_indicator_urls.utility_indicator_createService(),
-                utility_indicator_newCard
+            const { status } = await utility_indicator_ajax.utility_indicator_delete(
+                utility_indicator_urls.utility_indicator_removeService(cardId)
             );
             
-            if (status === 201) {
-                alert('Услуга успешно добавлена');
+            if (status === 204) {
                 this.utility_indicator_loadProducts();
             }
         } catch (error) {
-            alert('Ошибка при добавлении услуги');
-            console.error('Ошибка создания:', error);
+            console.error('Ошибка удаления:', error);
         }
+    }
+
+    utility_indicator_addCard() {
+        // Открываем страницу редактирования без ID (создание новой услуги)
+        const editPage = new utility_indicator_EditPage(this.utility_indicator_parent, null);
+        editPage.utility_indicator_render();
     }
 
     utility_indicator_updateProductCards() {
