@@ -6,39 +6,28 @@ const utility_indicatorService = require('./utility_indicator_services/utility_i
 const app = express();
 const PORT = 3000;
 
-// Раздача статики
+// ===== РАЗДАЧА СТАТИЧЕСКИХ ФАЙЛОВ (СОБРАННЫЙ ФРОНТЕНД) =====
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Путь к файлу данных
+// Определяем путь к файлу данных
 const UTILITY_DATA_FILE_PATH = path.join(__dirname, 'utility_indicator_data/utility_indicator.json');
+
+// Инициализируем сервис с путем к файлу данных
 utility_indicatorService.utility_init(UTILITY_DATA_FILE_PATH);
 
-// Парсинг JSON
+// Middleware для парсинга JSON
 app.use(express.json());
 
-// Парсинг text/plain (важно для CORS обхода!)
-app.use(express.text({ type: 'text/plain' }));
-
-// Преобразование text/plain в JSON
-app.use((req, res, next) => {
-    if (req.is('text/plain') && req.body && typeof req.body === 'string') {
-        try {
-            req.body = JSON.parse(req.body);
-        } catch (e) {}
-    }
-    next();
-});
-
-// Логирование
+// Логирующий middleware
 app.use((req, res, next) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
 });
 
-// Маршруты API
+// Подключение маршрутов API
 app.use('/utility_indicator', utility_indicatorRouter);
 
-// SPA fallback
+// Для всех остальных маршрутов отдаем HTML (SPA)
 app.use((req, res, next) => {
     if (!req.path.startsWith('/utility_indicator') && !req.path.includes('.')) {
         res.sendFile(path.join(__dirname, '../public', 'utility_indicator.html'));
@@ -47,7 +36,7 @@ app.use((req, res, next) => {
     }
 });
 
-// 404
+// Глобальная обработка 404 для API
 app.use((req, res) => {
     res.status(404).json({ error: 'Маршрут не найден' });
 });
@@ -60,6 +49,7 @@ app.use((err, req, res, next) => {
 
 app.set('json spaces', 2);
 
+// Запуск сервера
 app.listen(PORT, () => {
-    console.log(`Сервер запущен: http://localhost:${PORT}`);
+    console.log(`Сервер запущен по адресу http://localhost:${PORT}`);
 });
